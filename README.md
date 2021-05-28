@@ -47,8 +47,8 @@ See [Tutorial](/docs/Tutorial.md) for more examples.
 
 ## Features
 
-- **Markdown Math, Code Blocks, Images, Tables etc...**
-- Cloze **within Latex Math and Code Blocks** by using [replaceblock](/docs/replaceblock).
+- **Rendering of Markdown Math, Code Blocks, Images, Tables etc...**
+- Cloze **within Latex Math and Code Blocks** by using [replaceblock](/docs/replaceblock.md).
 - **Breadcrumbs** in Anki that links to file that generated the flashcard.
 - **Adding cards to user-specified deck** on a *per-file* or *per-block* basis.
 - **Can handle creating, updating, deleting** of Anki cards perfectly.
