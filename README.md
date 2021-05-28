@@ -1,4 +1,4 @@
-# Obsidian Anki Sync - Yet another plugin
+# Obsidian Anki Sync - Yet another anki plugin
 
 This plugin allow you to make flashcards in [Obsidian](https://obsidian.md/) and sync them to [Anki](https://apps.ankiweb.net/).
 
