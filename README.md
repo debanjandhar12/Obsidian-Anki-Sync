@@ -71,8 +71,9 @@ This is why I made this.
 </details>
 
 <details>
- <summary>How does auto deletation work</summary>
+ <summary>How does auto deletation work?</summary>
    First, each anki card is marked as "created by plugin from this vault" and "not created by plugin from this vault". A card is marked as "created by plugin" if it contains the name of vault as tag, as well as ObsidianAnkiSync tag, as well as the type of note of the card must be of type ObsidianAnkiSyncModel.
+   Now, if a card is marked "created by plugin from this vault" but it is not available in the vault, then the card is deleted.
 </details>
 
 <details>
