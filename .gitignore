@@ -104,7 +104,7 @@ dist
 .tern-port
 
 #Remove Development & Production Files
-.out/*
+out/
 
 #Remove Test Obsidian Vault
-.testvault/*
+testvault/
