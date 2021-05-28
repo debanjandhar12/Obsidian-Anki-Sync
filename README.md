@@ -66,14 +66,19 @@ For detailed documentation on blocks see:
 ## FAQ
 <details>
  <summary>Why yet another plugin for obsidian to anki sync?</summary>
-The exsisting two plugins have a major limitation to implement my workflow: No clozes inside math and code blocks ☹ <br>
-It was absolutely necessary for me which is why why I started this as a personal project.
+The existing two plugins have a major limitation to implement my workflow: No clozes inside math and code blocks ☹ <br>
+This is why I made this.
+</details>
+
+<details>
+ <summary>How does auto deletation work</summary>
+   First, each anki card is marked as "created by plugin from this vault" and "not created by plugin from this vault". A card is marked as "created by plugin" if it contains the name of vault as tag, as well as ObsidianAnkiSync tag, as well as the type of note of the card must be of type ObsidianAnkiSyncModel.
 </details>
 
 <details>
  <summary>Can i delete or modify the auto-generated oid attribute?
  </summary>
-<b>No!</b> Please dont do that. <br> We use that oid to track the cards in anki.
+<b>No!</b> Please dont do that. <br> The plugin uses the oid to track the cards in anki.
 Deleting it will cause the plugin to delete the old card and create a new one in Anki. This means that the scheduling information for the card gets deleted if you remove or modify oid.
 </details>
 
