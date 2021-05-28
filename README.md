@@ -67,7 +67,7 @@ For detailed documentation on blocks see:
 <details>
  <summary>Why yet another plugin for obsidian to anki sync?</summary>
 The exsisting two plugins have a major limitation to implement my workflow: No clozes inside math and code blocks ☹ <br>
-It was absolutely necessary for me. This is why why I started this as a personal project.
+It was absolutely necessary for me which is why why I started this as a personal project.
 </details>
 
 <details>
