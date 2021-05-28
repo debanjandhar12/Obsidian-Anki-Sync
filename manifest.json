@@ -1,8 +1,8 @@
 {
     "id": "ObsidianAnkiSync",
     "name": "Obsidian Anki Sync",
-    "version": "0.1.0",
-    "description": "Create Anki flashcards from obsidian via powerful Markup language.",
+    "version": "0.3.0",
+    "description": "Obsidian plugin to make flashcards and sync them to Anki.",
     "author": "debanjandhar12",
     "authorUrl": "https://github.com/debanjandhar12",
     "isDesktopOnly": true

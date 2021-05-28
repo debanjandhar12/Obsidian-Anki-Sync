@@ -6,7 +6,6 @@ import { AnkiCardTemplates } from './templates/AnkiCardTemplates';
 import { Block } from './Block';
 import { parseReplaceBlockInFile } from './replaceblock';
 import { parseBasicBlockInFile } from './basicblock';
-import { getAttribInCommentLine } from './utils';
 
 export default class MyPlugin extends Plugin {
 	async onload() {
