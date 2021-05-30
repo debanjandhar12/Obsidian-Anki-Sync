@@ -1,6 +1,6 @@
 import { Block } from "./block";
 import { MetadataCache, TFile, Vault } from 'obsidian';
-import { getAttribInCommentLine } from './utils';
+import { getAttribInCommentLine, regexPraser } from './utils';
 import { Remarkable } from 'remarkable';
 import * as AnkiConnect from './AnkiConnect';
 import { customAlphabet } from "nanoid";
@@ -73,15 +73,17 @@ export class ReplaceBlock extends Block {
         matches.forEach((match) => {
             console.debug(match[0]);
             let replaceId = getAttribInCommentLine(match[0], "id");
-            let replaceText = getAttribInCommentLine(match[0], "text");
+            let replaceText = getAttribInCommentLine(match[0], "text") || regexPraser(getAttribInCommentLine(match[0], "regex")) || regexPraser("/$^/g");
             let n = getAttribInCommentLine(match[0], "n") || "All";
             if (n == "All") {
-                anki = anki.replaceAll(replaceText, `{{c${replaceId}:: ${replaceText} }}`);
+                anki = anki.replaceAll(replaceText, function (match) {
+                    return `{{c${replaceId}:: ${match} }}`;
+                });
             }
             else {
                 let i = 0;
                 anki = anki.replace(replaceText, function (match) { // https://stackoverflow.com/questions/10584748/find-and-replace-nth-occurrence-of-bracketed-expression-in-string/10585234
-                    return (i++ == n) ? `{{c${replaceId}:: ${replaceText} }}` : match;
+                    return (i++ == n) ? `{{c${replaceId}:: ${match} }}` : match;
                 });
             }
         });
