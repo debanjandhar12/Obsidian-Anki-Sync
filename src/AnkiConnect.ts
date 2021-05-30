@@ -115,17 +115,16 @@ export async function createModel(modelName: string, fields: string[], frontTemp
             ]
         });
     }
-    await invoke("updateModelTemplates", {
+    let r = await invoke("updateModelTemplates", {
         "model": {
             "name": modelName,
             "templates": {
                 "Card": {
-                    "Name": "Card",
                     "Front": frontTemplate,
                     "Back": backTemplate
                 }
             }
         }
     });
-    return;
+    return r;
 }
