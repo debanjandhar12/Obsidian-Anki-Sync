@@ -62,7 +62,7 @@ export class ReplaceBlock extends Block {
 
     toAnkiHTML(): string {
         let anki = this.original;
-        // -- Preprocess --
+
         // Remove All Comments
         const CommentsRegExp: RegExp = /<!--((\n|.)*?)-->/gi // https://regexr.com/5tatm
         anki = anki.replaceAll(CommentsRegExp, "");

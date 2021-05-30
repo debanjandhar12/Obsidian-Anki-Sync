@@ -6,6 +6,7 @@ import { AnkiCardTemplates } from './templates/AnkiCardTemplates';
 import { Block } from './Block';
 import { parseReplaceBlockInFile } from './replaceblock';
 import { parseBasicBlockInFile } from './basicblock';
+import { parseClozeBlockInFile } from './clozeblock';
 
 export default class MyPlugin extends Plugin {
 	async onload() {
@@ -50,6 +51,7 @@ export default class MyPlugin extends Plugin {
 		for(var file of this.app.vault.getMarkdownFiles()) {
 			allBlocks = allBlocks.concat(await parseReplaceBlockInFile(this.app.vault, this.app.metadataCache, file));
 			allBlocks = allBlocks.concat(await parseBasicBlockInFile(this.app.vault, this.app.metadataCache, file));
+			allBlocks = allBlocks.concat(await parseClozeBlockInFile(this.app.vault, this.app.metadataCache, file));
 		}
 		console.log("Recognized Blocks:", allBlocks);
 
@@ -85,6 +87,7 @@ export default class MyPlugin extends Plugin {
 		for(var file of this.app.vault.getMarkdownFiles()) {
 			allBlocks = allBlocks.concat(await parseReplaceBlockInFile(this.app.vault, this.app.metadataCache, file));
 			allBlocks = allBlocks.concat(await parseBasicBlockInFile(this.app.vault, this.app.metadataCache, file));
+			allBlocks = allBlocks.concat(await parseClozeBlockInFile(this.app.vault, this.app.metadataCache, file));
 		}
 		// Get the anki ids of blocks
 		let blockIds:number[] = [];
