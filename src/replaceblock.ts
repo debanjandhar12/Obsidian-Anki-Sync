@@ -2,7 +2,7 @@ import { Block } from "./block";
 import { MetadataCache, TFile, Vault } from 'obsidian';
 import { getAttribInCommentLine } from './utils';
 import { Remarkable } from 'remarkable';
-import * as AnkiConnect from './anki_connect';
+import * as AnkiConnect from './AnkiConnect';
 import { customAlphabet } from "nanoid";
 
 export class ReplaceBlock extends Block {
@@ -20,20 +20,20 @@ export class ReplaceBlock extends Block {
         const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 21);
         let oid = this.getOId() || "Obs" + nanoid();
         let text = this.toAnkiHTML();
-        console.log(oid, text);
+        console.debug(oid, text);
         let extra = this.getAttrib("extra") || "";
-        console.log(extra);
+        console.debug(extra);
         let deck = this.getAttrib("deck") || this.getDocYAMLProp("deck") || "Default::ObsidianAnkiSync";
-        console.log(deck);
+        console.debug(deck);
         let uri = encodeURI(`obsidian://vault/${this.vault.getName()}/${this.file.path}`);
         let uri_html = `<a href="${uri}">${this.vault.getName()} > ${this.file.path.replaceAll("\/", " > ")}</a>`;
-        console.log(uri_html);
+        console.debug(uri_html);
         let yamlTags = this.getDocYAMLProp("tags");
         if(yamlTags == null) yamlTags = [];
         if(Array.isArray(yamlTags)) yamlTags = yamlTags.toString();
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
-        console.log(tags);        
+        console.debug(tags);        
         let res = await AnkiConnect.addNote(deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html }, tags);
         if (!isNaN(res))
             return oid; // if res is a number
@@ -43,20 +43,20 @@ export class ReplaceBlock extends Block {
     async updateInAnki(): Promise<any> {
         let oid = this.getOId();
         let text = this.toAnkiHTML();
-        console.log(oid, text);
+        console.debug(oid, text);
         let extra = this.getAttrib("extra") || "";
-        console.log(extra);
+        console.debug(extra);
         let deck = this.getAttrib("deck") || this.getDocYAMLProp("deck") || "Default::ObsidianAnkiSync";
-        console.log(deck);
+        console.debug(deck);
         let uri = encodeURI(`obsidian://vault/${this.vault.getName()}/${this.file.path}`);
         let uri_html = `<a href="${uri}">${this.vault.getName()} > ${this.file.path.replaceAll("\/", " > ")}</a>`;
-        console.log(uri_html);
+        console.debug(uri_html);
         let yamlTags = this.getDocYAMLProp("tags");
         if(yamlTags == null) yamlTags = [];
         if(Array.isArray(yamlTags)) yamlTags = yamlTags.toString();
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
-        console.log(tags);        
+        console.debug(tags);        
         return await AnkiConnect.updateNote(await this.getAnkiId(), deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html }, tags);
     }
 
@@ -71,7 +71,7 @@ export class ReplaceBlock extends Block {
         const ReplaceStatementRegExp: RegExp = /<!--(\t|\n| )*?replace((\n| (\n|.)*?)*?) -->/gi // https://regexr.com/5tb31
         let matches = [...this.original.matchAll(ReplaceStatementRegExp)];
         matches.forEach((match) => {
-            console.log(match[0]);
+            console.debug(match[0]);
             let replaceId = getAttribInCommentLine(match[0], "id");
             let replaceText = getAttribInCommentLine(match[0], "text");
             let n = getAttribInCommentLine(match[0], "n") || "All";

@@ -2,7 +2,7 @@ import { Block } from "./block";
 import { MetadataCache, TFile, Vault } from 'obsidian';
 import { getAttribInCommentLine } from './utils';
 import { Remarkable } from 'remarkable';
-import * as AnkiConnect from './anki_connect';
+import * as AnkiConnect from './AnkiConnect';
 import { customAlphabet } from "nanoid";
 
 export class BasicBlock extends Block {
@@ -20,20 +20,20 @@ export class BasicBlock extends Block {
         const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 21);
         let oid = this.getOId() || "Obs" + nanoid();
         let text = this.toAnkiHTML();
-        console.log(oid, text);
+        console.debug(oid, text);
         let extra = this.getAttrib("extra") || "";
-        console.log(extra);
+        console.debug(extra);
         let deck = this.getAttrib("deck") || this.getDocYAMLProp("deck") || "Default::ObsidianAnkiSync";
-        console.log(deck);
+        console.debug(deck);
         let uri = encodeURI(`obsidian://vault/${this.vault.getName()}/${this.file.path}`);
         let uri_html = `<a href="${uri}">${this.vault.getName()} > ${this.file.path.replaceAll("\/", " > ")}</a>`;
-        console.log(uri_html);
+        console.debug(uri_html);
         let yamlTags = this.getDocYAMLProp("tags");
         if(yamlTags == null) yamlTags = [];
         if(Array.isArray(yamlTags)) yamlTags = yamlTags.toString();
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
-        console.log(tags);        
+        console.debug(tags);        
         let res = await AnkiConnect.addNote(deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html }, tags);
         if (!isNaN(res))
             return oid; // if res is a number
@@ -43,20 +43,20 @@ export class BasicBlock extends Block {
     async updateInAnki(): Promise<any> {
         let oid = this.getOId();
         let text = this.toAnkiHTML();
-        console.log(oid, text);
+        console.debug(oid, text);
         let extra = this.getAttrib("extra") || "";
-        console.log(extra);
+        console.debug(extra);
         let deck = this.getAttrib("deck") || this.getDocYAMLProp("deck") || "Default::ObsidianAnkiSync";
-        console.log(deck);
+        console.debug(deck);
         let uri = encodeURI(`obsidian://vault/${this.vault.getName()}/${this.file.path}`);
         let uri_html = `<a href="${uri}">${this.vault.getName()} > ${this.file.path.replaceAll("\/", " > ")}</a>`;
-        console.log(uri_html);
+        console.debug(uri_html);
         let yamlTags = this.getDocYAMLProp("tags");
         if(yamlTags == null) yamlTags = [];
         if(Array.isArray(yamlTags)) yamlTags = yamlTags.toString();
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
-        console.log(tags);        
+        console.debug(tags);        
         return await AnkiConnect.updateNote(await this.getAnkiId(), deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html }, tags);
     }
 
@@ -72,7 +72,7 @@ export class BasicBlock extends Block {
         const backCardRegex: RegExp = /(?<=::)(.|\n)*/i // https://regexr.com/5tr7v
         let forward = (this.getAttrib("forward") == "" || this.getAttrib("forward") == "forward" || this.getAttrib("forward") == null || (String(this.getAttrib("forward")).toLowerCase() == "true"));
         let reverse = (this.getAttrib("reverse") != "" && this.getAttrib("reverse") != null && ((String(this.getAttrib("reverse")).toLowerCase() == "true") || (String(this.getAttrib("reverse")).toLowerCase() == "reverse")));
-        console.log(typeof this.getAttrib("forward"), this.getAttrib("reverse"))
+        console.debug(typeof this.getAttrib("forward"), this.getAttrib("reverse"))
         if(forward)
         anki = anki.replace(backCardRegex, function (match) { 
             return `{{c1:: ${match} }}`;

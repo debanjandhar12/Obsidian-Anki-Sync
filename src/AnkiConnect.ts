@@ -1,3 +1,6 @@
+import { Notice } from "obsidian";
+import { createJsxClosingElement } from "typescript";
+import { findAnkiConnectErrorSolution } from "./AnkiConnectErrorSolution";
 
 const ANKI_PORT = 8765;
 
@@ -30,9 +33,20 @@ export function invoke(action: string, params = {}): any {
 
         xhr.open('POST', 'http://127.0.0.1:' + ANKI_PORT.toString());
         xhr.send(JSON.stringify({ action, version: 6, params }));
+    }).catch((e) => {
+        new Notice(`Sync Failed. \n Error: \n - Message: ${e} \n - Solution: ${findAnkiConnectErrorSolution(action ,e)}`, 10000);
+        throw e;
     });
 }
 
+export async function requestPermission(): Promise<any> {
+    let r = await invoke("requestPermission", {});
+    if (r.permission != "granted") {
+         new Notice(`Sync Failed. \n Error: \n - Message: Permission to access anki was denied \n - Solution: ${findAnkiConnectErrorSolution("requestPermission" , "Permission to access anki was denied")}`, 10000);
+         throw "Permission was denied to access Anki";
+    }
+    return r;
+}
 
 export async function createDeck(deckName: string): Promise<any> {
     return await invoke("createDeck", { "deck": deckName });
@@ -48,7 +62,7 @@ export async function addNote(deckName: string, modelName: string, fields, tags:
 // Update existing note (NB: Note must exists)
 export async function updateNote(ankiId: number, deckName: string, modelName: string, fields, tags: string[]): Promise<any> {
     let noteinfo = (await invoke("notesInfo", { "notes": [ankiId] }))[0];
-    console.log(noteinfo);
+    console.debug(noteinfo);
     let cards = noteinfo.cards;
     let r = await invoke("changeDeck", { "cards": cards, "deck": deckName }); // Move cards made by note to new deck and create new deck if deck not created
 

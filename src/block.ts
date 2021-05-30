@@ -1,6 +1,6 @@
 import { MetadataCache, TFile, Vault } from 'obsidian';
 import { getAttribInCommentLine, insertAttrib } from './utils';
-import * as AnkiConnect from './anki_connect';
+import * as AnkiConnect from './AnkiConnect';
 
 export abstract class Block {
     vault: Vault;
