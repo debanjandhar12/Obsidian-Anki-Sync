@@ -71,6 +71,20 @@ Several examples already shown above.
 
 ## replaceblock
 
+It is used make cloze cards. It suports Anki's cloze card syntax.
+
+```markdown
+<!-- clozeblock-start -->
+The capital of Japan is {{c1:: Tokyo}}
+<!-- clozeblock-end -->
+```
+
+This would generate the card:
+
+![Cards](./images/Tut4.jpg)
+
+## replaceblock
+
 This is a special block that creates clozes by replacing the specified text.
 
 ```markdown
