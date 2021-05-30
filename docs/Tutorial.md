@@ -69,7 +69,7 @@ It is used make forward and reversed cards.
 
 Several examples already shown above.
 
-## replaceblock
+## clozeblock
 
 It is used make cloze cards. It suports Anki's cloze card syntax.
 
