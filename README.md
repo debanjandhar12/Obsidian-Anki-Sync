@@ -4,8 +4,6 @@ This plugin allow you to make flashcards in [Obsidian](https://obsidian.md/) and
 
 This is similar to [Obsidian_to_Anki](https://github.com/Pseudonium/Obsidian_to_Anki) except this plugin uses a different and more powerful markup based syntax for making flashcards.
 
-**NB: Please do not use this in your main vault or main anki account until 0.5.0 is released  (by 15-06-21).**
-
 ## Installation
 
 1. Download `main.js` and `manifest.json` from [releases](https://github.com/debanjandhar12/Obsidian-Anki-Sync/releases) and put it in a new folder in your obsidian plugin folder.

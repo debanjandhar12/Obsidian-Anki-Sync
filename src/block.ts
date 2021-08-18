@@ -39,11 +39,12 @@ export abstract class Block {
         let modified = this.original.replace(BlockStartCommentRegExp, function (match): string {
             return insertAttrib(match, 'oid', oid);
         });
+        modified = modified.replaceAll("$", "$$$$"); // Bug Fix: https://stackoverflow.com/questions/9423722/string-replace-weird-behavior-when-using-dollar-sign-as-replacement
 
         // Read and modify the file with addition of id in obsidian
         let fileContent = await this.vault.read(this.file);
         fileContent = fileContent.replace(this.original, modified);
-        this.vault.modify(this.file, fileContent)
+        this.vault.modify(this.file, fileContent);
     }
 
     async getAnkiId(): Promise<number> {

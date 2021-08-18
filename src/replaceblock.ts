@@ -100,7 +100,8 @@ export class ReplaceBlock extends Block {
             breaks: false,
             typographer: false,
         });
-
+        md.inline.ruler.disable(['sub','sup','ins']);
+        md.block.ruler.disable(['code']);
         anki = md.render(anki);
 
         return anki;

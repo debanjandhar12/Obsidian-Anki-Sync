@@ -95,6 +95,7 @@ export default class MyPlugin extends Plugin {
 			blockIds.push(await block.getAnkiId());
 		console.log("Recognized Block's AnkiId:", blockIds); 
 		// Get Anki Notes and their ids
+		await AnkiConnect.invoke("reloadCollection", {});
 		let q = await AnkiConnect.query(`tag:${this.app.vault.getName().replace(/\s/g, "_")} note:ObsidianAnkiSyncModel tag:ObsidianAnkiSync`)
 		let ankiIds:number[] = q.map(i=>parseInt(i));
 		console.log("Anki Notes created by App:", ankiIds);
@@ -108,7 +109,8 @@ export default class MyPlugin extends Plugin {
 		}
 
 		// -- Update Anki and show results --
-		AnkiConnect.invoke("reloadCollection", {});
+		await AnkiConnect.invoke("removeEmptyNotes", {});
+		await AnkiConnect.invoke("reloadCollection", {});
 		new Notice(`Sync Completed! \nCreated Blocks:${created} Updated Blocks:${updated} Deleted Blocks:${deleted}`, 3000);
 		console.log(`Sync Completed! Created Blocks:${created} Updated Blocks:${updated} Deleted Blocks:${deleted}`);
 	}
