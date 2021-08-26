@@ -6,10 +6,7 @@ import * as AnkiConnect from './AnkiConnect';
 import { customAlphabet } from "nanoid";
 
 export class ClozeBlock extends Block {
-    vault: Vault;
-    file: TFile;
     original: string;
-    metadataCache: MetadataCache;
 
     constructor(vault: Vault, metadataCache: MetadataCache, file: TFile, original: string) {
         super(vault, metadataCache, file);

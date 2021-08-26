@@ -5,6 +5,8 @@
       "target": "esnext",
       "moduleResolution": "node",
       "allowSyntheticDefaultImports": true,
-      "allowJs": true,
+      "allowJs": false,
   },
+  "exclude": ["node_modules", "out"],
+  "include": ["src/**/*"]
 }
