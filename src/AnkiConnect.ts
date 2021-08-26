@@ -89,7 +89,7 @@ export async function createBackup(): Promise<any> {
     for (let deck of decknames) {
         if (deck.includes("::") == false) {  // if is not a subdeck then only create backup
             console.log(`Created backup with name ObsidianAnkiSync-Backup-${timestamp}_${deck}.apkg`);
-            await invoke("exportPackage", { "deck": deck, "path": `../backups/ObsidianAnkiSync-Backup-${timestamp}_${deck}.apkg`, "includeSched": true });
+            await invoke("exportPackage", { "deck": deck, "path": `../ObsidianAnkiSync-Backup-${timestamp}_${deck}.apkg`, "includeSched": true });
         }
     }
     return;

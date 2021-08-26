@@ -53,7 +53,7 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 		await AnkiConnect.requestPermission();
 
 		// -- Create backup of Anki --
-		await AnkiConnect.createBackup();
+		try{ await AnkiConnect.createBackup(); } catch(e){ console.log(e) }
 
 		// -- Create models if it doesn't exists --
 		await AnkiConnect.createModel("ObsidianAnkiSyncModel", ["oid", "Text", "Extra", "Breadcrumb", "Config", "Tobedefinedlater", "Tobedefinedlater2"], AnkiCardTemplates.frontTemplate, AnkiCardTemplates.backTemplate);

@@ -84,7 +84,7 @@ Deleting it will cause the plugin to delete the old card and create a new one in
 <details>
  <summary>Where is the auto anki backup taken before every sync stored?</summary>
 In Windows 10, it is stored at:<br>
-C:\Users\{WindowsUserName}\AppData\Roaming\Anki2\{AnkiProfileName}\backup
+C:\Users\{WindowsUserName}\AppData\Roaming\Anki2\{AnkiProfileName}
 <br><br>
 NB: It is stored in a per-deck basis with name ObsidianAnkiSync-Backup-${timestamp}_${deck}.apkg
 </details>
