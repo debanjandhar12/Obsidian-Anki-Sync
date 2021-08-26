@@ -1,6 +1,5 @@
 import { Notice } from "obsidian";
 import { createJsxClosingElement } from "typescript";
-import { findAnkiConnectErrorSolution } from "./AnkiConnectErrorSolution";
 
 const ANKI_PORT = 8765;
 
@@ -33,17 +32,13 @@ export function invoke(action: string, params = {}): any {
 
         xhr.open('POST', 'http://127.0.0.1:' + ANKI_PORT.toString());
         xhr.send(JSON.stringify({ action, version: 6, params }));
-    }).catch((e) => {
-        new Notice(`Sync Failed. \n Error: \n - Message: ${e} \n - Solution: ${findAnkiConnectErrorSolution(action ,e)}`, 12000);
-        throw e;
-    });
+    })
 }
 
 export async function requestPermission(): Promise<any> {
     let r = await invoke("requestPermission", {});
     if (r.permission != "granted") {
-         new Notice(`Sync Failed. \n Error: \n - Message: Permission to access anki was denied \n - Solution: ${findAnkiConnectErrorSolution("requestPermission" , "Permission to access anki was denied")}`, 12000);
-         throw "Permission was denied to access Anki";
+         return new Promise((resolve, reject) => {throw 'Permission to access anki was denied';});
     }
     return r;
 }
