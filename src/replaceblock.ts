@@ -105,10 +105,9 @@ export class ReplaceBlock extends Block {
     }
 }
 
-export async function parseReplaceBlockInFile(vault: Vault, metadataCache: MetadataCache, file: TFile): Promise<ReplaceBlock[]> {
+export async function parseReplaceBlockInFile(vault: Vault, metadataCache: MetadataCache, file: TFile, fileContent: string): Promise<ReplaceBlock[]> {
     var res: ReplaceBlock[] = [];
     const ReplaceBlockRegExp: RegExp = /<!--(\t|\n| )*?replaceblock-start(\n| (\n|.)*?)*?-->(\n|.)*?<!--(\t|\n| )*?replaceblock-end(\t|\n| )*?-->/gi // https://regexr.com/5tace
-    var fileContent = await vault.read(file);
     let matches = [...fileContent.matchAll(ReplaceBlockRegExp)];
     matches.forEach((match) => {
         var block: ReplaceBlock = new ReplaceBlock(vault, metadataCache, file, match[0]) // , match.index, match[0].length

@@ -100,10 +100,9 @@ export class BasicBlock extends Block {
     }
 }
 
-export async function parseBasicBlockInFile(vault: Vault, metadataCache: MetadataCache, file: TFile): Promise<BasicBlock[]> {
+export async function parseBasicBlockInFile(vault: Vault, metadataCache: MetadataCache, file: TFile, fileContent: string): Promise<BasicBlock[]> {
     var res: BasicBlock[] = [];
     const BasicBLockRegExp: RegExp = /<!--(\t|\n| )*?basicblock-start(\n| (\n|.)*?)*?-->(\n|.)*?<!--(\t|\n| )*?basicblock-end(\t|\n| )*?-->/gi // https://regexr.com/5tace
-    var fileContent = await vault.read(file);
     let matches = [...fileContent.matchAll(BasicBLockRegExp)];
     matches.forEach((match) => {
         var block: BasicBlock = new BasicBlock(vault, metadataCache, file, match[0]) // , match.index, match[0].length

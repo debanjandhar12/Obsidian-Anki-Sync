@@ -84,10 +84,9 @@ export class ClozeBlock extends Block {
     }
 }
 
-export async function parseClozeBlockInFile(vault: Vault, metadataCache: MetadataCache, file: TFile): Promise<ClozeBlock[]> {
+export async function parseClozeBlockInFile(vault: Vault, metadataCache: MetadataCache, file: TFile, fileContent: string): Promise<ClozeBlock[]> {
     var res: ClozeBlock[] = [];
     const ClozeBlockRegExp: RegExp = /<!--(\t|\n| )*?clozeblock-start(\n| (\n|.)*?)*?-->(\n|.)*?<!--(\t|\n| )*?clozeblock-end(\t|\n| )*?-->/gi // https://regexr.com/5tace
-    var fileContent = await vault.read(file);
     let matches = [...fileContent.matchAll(ClozeBlockRegExp)];
     matches.forEach((match) => {
         var block: ClozeBlock = new ClozeBlock(vault, metadataCache, file, match[0]) // , match.index, match[0].length

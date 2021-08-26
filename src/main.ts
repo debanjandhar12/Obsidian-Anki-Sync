@@ -8,7 +8,7 @@ import { parseReplaceBlockInFile } from './replaceblock';
 import { parseBasicBlockInFile } from './basicblock';
 import { parseClozeBlockInFile } from './clozeblock';
 
-export default class MyPlugin extends Plugin {
+export default class ObsidianAnkiSyncPlugin extends Plugin {
 	async onload() {
 		console.log('Loading ObsidianAnkiSync');
 
@@ -33,10 +33,13 @@ export default class MyPlugin extends Plugin {
 		console.log('Unloading ObsidianAnkiSync');
 	}
 
+	syncing: boolean = false;
 	async syncObsidianToAnki() {
+		if(this.syncing == true) {console.log(`Syncing already in process...`); return;} // Prevent the user from accidentally start the sync twice
+
+		this.syncing = true;
 		new Notice(`Starting Obsidian to Anki Sync for vault ${this.app.vault.getName()}...`); // ${this.app.appId} can be used aswell
 		console.log(`Sync Started`);
-
 		// -- Request Access --
 		await AnkiConnect.requestPermission();
 		
@@ -49,9 +52,10 @@ export default class MyPlugin extends Plugin {
 		// -- Recognize all different kinds of blocks and collect them --
 		var allBlocks: Block[]  = [];
 		for(var file of this.app.vault.getMarkdownFiles()) {
-			allBlocks = allBlocks.concat(await parseReplaceBlockInFile(this.app.vault, this.app.metadataCache, file));
-			allBlocks = allBlocks.concat(await parseBasicBlockInFile(this.app.vault, this.app.metadataCache, file));
-			allBlocks = allBlocks.concat(await parseClozeBlockInFile(this.app.vault, this.app.metadataCache, file));
+			let fileContent = await this.app.vault.cachedRead(file);
+			allBlocks = allBlocks.concat(await parseReplaceBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
+			allBlocks = allBlocks.concat(await parseBasicBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
+			allBlocks = allBlocks.concat(await parseClozeBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
 		}
 		console.log("Recognized Blocks:", allBlocks);
 
@@ -85,9 +89,10 @@ export default class MyPlugin extends Plugin {
 		// Update clozeblocks again
 		allBlocks = []; 
 		for(var file of this.app.vault.getMarkdownFiles()) {
-			allBlocks = allBlocks.concat(await parseReplaceBlockInFile(this.app.vault, this.app.metadataCache, file));
-			allBlocks = allBlocks.concat(await parseBasicBlockInFile(this.app.vault, this.app.metadataCache, file));
-			allBlocks = allBlocks.concat(await parseClozeBlockInFile(this.app.vault, this.app.metadataCache, file));
+			let fileContent = await this.app.vault.cachedRead(file);
+			allBlocks = allBlocks.concat(await parseReplaceBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
+			allBlocks = allBlocks.concat(await parseBasicBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
+			allBlocks = allBlocks.concat(await parseClozeBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
 		}
 		// Get the anki ids of blocks
 		let blockIds:number[] = [];
@@ -111,7 +116,8 @@ export default class MyPlugin extends Plugin {
 		// -- Update Anki and show results --
 		await AnkiConnect.invoke("removeEmptyNotes", {});
 		await AnkiConnect.invoke("reloadCollection", {});
-		new Notice(`Sync Completed! \nCreated Blocks:${created} Updated Blocks:${updated} Deleted Blocks:${deleted}`, 3000);
+		this.syncing = false;
+		new Notice(`Sync Completed! \nCreated Blocks:${created} Updated Blocks:${updated} Deleted Blocks:${deleted}`, 4000);
 		console.log(`Sync Completed! Created Blocks:${created} Updated Blocks:${updated} Deleted Blocks:${deleted}`);
 	}
 }
