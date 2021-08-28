@@ -49,7 +49,7 @@ This is similar to [Obsidian_to_Anki](https://github.com/Pseudonium/Obsidian_to_
 $$\sin \theta = \frac{Opposite}{Hypotenuse}$$
 <!-- replaceblock-end -->
 ```
-![Cards](./docs/images/Tut0.jpg)
+![Cards](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/Tut0.jpg)
 
 See [Tutorial](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/Tutorial.md) for more examples and explanation on usage.
 
