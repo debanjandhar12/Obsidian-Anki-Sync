@@ -6,11 +6,13 @@ This is similar to [Obsidian_to_Anki](https://github.com/Pseudonium/Obsidian_to_
 
 ## Installation
 
-1. Download `main.js` and `manifest.json` from [releases](https://github.com/debanjandhar12/Obsidian-Anki-Sync/releases) and put it in a new folder in your obsidian plugin folder.
+1. Download the plugin from Obsidian's Comunity Plugin section which can be accessed from the Settings pane under Third Party Plugins.
 
-2. Install AnkiConnect on Anki
+2. Download Anki if not installed.
 
-   - Open Anki
+3. Install AnkiConnect on Anki.
+
+   - Open Anki.
 
    - Select `Tools` > `Add-ons `. Now a Anki addon's dialog will open. 
 
@@ -34,19 +36,27 @@ This is similar to [Obsidian_to_Anki](https://github.com/Pseudonium/Obsidian_to_
 
      
 
-   - Restart Anki
+   - Restart Anki.
 
-3. Now, you can use the plugin by clicking Sync to Anki button. 
+4. Now, you can use the plugin by clicking Sync to Anki button. 
    NB: Make sure the anki is running before clicking the Sync to Anki button in obsidian.
 
 ## Examples
 
-See [Tutorial](/docs/Tutorial.md) for more examples.
+```markdown
+<!-- replaceblock-start -->
+<!-- replace id="1" text="Opposite" -->
+$$\sin \theta = \frac{Opposite}{Hypotenuse}$$
+<!-- replaceblock-end -->
+```
+![Cards](./docs/images/Tut0.jpg)
+
+See [Tutorial](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/Tutorial.md) for more examples and explanation on usage.
 
 ## Features
 
 - **Rendering of Markdown Math, Code Blocks, Images, Tables etc...**
-- Cloze **within Latex Math and Code Blocks** by using [replaceblock](/docs/replaceblock.md).
+- Cloze **within Latex Math and Code Blocks** by using [replaceblock](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/replaceblock.md).
 - **Breadcrumbs** in Anki that links to file that generated the flashcard.
 - **Adding cards to user-specified deck** on a *per-file* or *per-block* basis.
 - **Can handle creating, updating, deleting** of Anki cards perfectly.
@@ -55,11 +65,11 @@ See [Tutorial](/docs/Tutorial.md) for more examples.
 
 ## Documentation
 
-See [Tutorial](/docs/Tutorial.md) for basics.
+See [Tutorial](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/Tutorial.md) for basics.
 
 For detailed documentation on blocks see: 
 
-[basicblock](/docs/basicblock.md) [replaceblock](/docs/replaceblock.md) [clozeblock](/docs/clozeblock.md)
+[basicblock](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/basicblock.md) [replaceblock](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/replaceblock.md) [clozeblock](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/clozeblock.md)
 
 ## FAQ
 <details>
