@@ -39,7 +39,7 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 		if (this.syncing == true) { console.log(`Syncing already in process...`); return; } // Prevent the user from accidentally start the sync twice
 		this.syncing = true;
 		this.syncObsidianToAnki().catch(e => {
-			console.log(e);
+			console.error(e);
 			new Notice(`Sync Failed. \nError Message:\n${e} \nPossible Solution:\n${findErrorSolution(e)}`, 12000);
 		}).finally(() => {
 			this.syncing = false;
@@ -53,7 +53,7 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 		await AnkiConnect.requestPermission();
 
 		// -- Create backup of Anki --
-		try{ await AnkiConnect.createBackup(); } catch(e){ console.log(e) }
+		try{ await AnkiConnect.createBackup(); } catch(e){ console.error(e); }
 
 		// -- Create models if it doesn't exists --
 		await AnkiConnect.createModel("ObsidianAnkiSyncModel", ["oid", "Text", "Extra", "Breadcrumb", "Config", "Tobedefinedlater", "Tobedefinedlater2"], AnkiCardTemplates.frontTemplate, AnkiCardTemplates.backTemplate);
