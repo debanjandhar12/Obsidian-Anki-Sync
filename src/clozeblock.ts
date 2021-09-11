@@ -54,7 +54,7 @@ export class ClozeBlock extends Block {
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
         console.debug(tags);        
-        return await AnkiConnect.updateNote(await this.getAnkiId(), deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html }, tags);
+        return await AnkiConnect.updateNote(await this.getAnkiId(), deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": ClozeBlock.settings.breadcrumb ? uri_html : ""}, tags);
     }
 
     toAnkiHTML(): string {

@@ -5,6 +5,7 @@ import * as AnkiConnect from './AnkiConnect';
 export abstract class Block {
     vault: Vault;
     metadataCache: MetadataCache;
+    static settings: any;
     file: TFile;
     abstract original: string;
 
