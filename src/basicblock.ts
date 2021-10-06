@@ -31,10 +31,8 @@ export class BasicBlock extends Block {
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
         console.debug(tags);        
-        let res = await AnkiConnect.addNote(deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html }, tags);
-        if (!isNaN(res))
-            return oid; // if res is a number
-        else return res;
+        let res = await AnkiConnect.addNote(oid, deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html }, tags);
+        return oid; 
     }
 
     async updateInAnki(): Promise<any> {

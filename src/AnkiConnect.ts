@@ -48,10 +48,15 @@ export async function createDeck(deckName: string): Promise<any> {
 }
 
 
-export async function addNote(deckName: string, modelName: string, fields, tags: string[]): Promise<any> {
+export async function addNote(oid: string, deckName: string, modelName: string, fields, tags: string[]): Promise<any> {
     let r; // Bug Fix: Await doesnt work proerly without this
     r = await createDeck(deckName); // Create Deck with name if it does not exists
-    return await invoke("addNote", { "note": { "modelName": modelName, "deckName": deckName, "fields": fields, "tags": tags, "options": { "allowDuplicate": true } } });
+
+    // Some versions of Anki doesnt allow to add notes without cloze
+    // The trick below adds an empty note with a cloze block, and then overwites it to overcome the above problem.
+    let ankiId = await invoke("addNote", { "note": { "modelName": modelName, "deckName": deckName, "fields": { "oid": oid, "Text": "{{c1:: placeholder}}", "Extra": "placeholder", "Breadcrumb": "placeholder", "Config" : JSON.stringify({}), "Tobedefinedlater": "Tobedefinedlater", "Tobedefinedlater2": "Tobedefinedlater2"}, "tags": tags, "options": { "allowDuplicate": true } } });
+    r = updateNote(ankiId, deckName, modelName, fields, tags);
+    return ankiId;
 }
 
 // Update existing note (NB: Note must exists)
@@ -109,17 +114,21 @@ export async function createModel(modelName: string, fields: string[], frontTemp
                 }
             ]
         });
+        console.log("Created Model");
     }
-    let r = await invoke("updateModelTemplates", {
+    
+    try {   
+        await invoke("updateModelTemplates", {
         "model": {
             "name": modelName,
             "templates": {
-                "Card": {
+                'Card': {
                     "Front": frontTemplate,
                     "Back": backTemplate
                 }
             }
         }
-    });
-    return r;
+    });} 
+    // Solves #1 by failing silenty, #1 was caused by AnkiConnect calling old Anki API but apprarenty even if it gives error, it works correctly.
+    catch (e) {if(e == "save() takes from 1 to 2 positional arguments but 3 were given") console.error(e); else throw e;}; 
 }

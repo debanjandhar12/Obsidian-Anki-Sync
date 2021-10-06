@@ -14,7 +14,7 @@ export class ReplaceBlock extends Block {
     }
 
     async addInAnki(): Promise<any> {
-        const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 21);
+        const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 17);
         let oid = this.getOId() || "Obs" + nanoid();
         let text = this.toAnkiHTML();
         console.debug(oid, text);
@@ -31,10 +31,8 @@ export class ReplaceBlock extends Block {
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
         console.debug(tags);        
-        let res = await AnkiConnect.addNote(deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html }, tags);
-        if (!isNaN(res))
-            return oid; // if res is a number
-        else return res;
+        let res = await AnkiConnect.addNote(oid, deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html, "Config" : JSON.stringify({}), "Tobedefinedlater": "Tobedefinedlater", "Tobedefinedlater2": "Tobedefinedlater2"}, tags);
+        return oid; 
     }
 
     async updateInAnki(): Promise<any> {
