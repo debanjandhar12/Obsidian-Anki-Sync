@@ -4,7 +4,7 @@ import * as AnkiConnect from './AnkiConnect';
 import { AnkiCardTemplates } from './templates/AnkiCardTemplates';
 import { findErrorSolution } from "./ErrorSolution";
 
-import {ObsidianAnkiSyncSettings} from "./ObsidianAnkiSyncSettings";
+import { ObsidianAnkiSyncSettings } from "./ObsidianAnkiSyncSettings";
 
 import { Block } from './Block';
 import { parseReplaceBlockInFile, ReplaceBlock } from './replaceblock';
@@ -43,13 +43,13 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, {"backup":false, "breadcrumb": true}, await this.loadData());
+		this.settings = Object.assign({}, { "backup": false, "breadcrumb": true }, await this.loadData());
 	}
 
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
-	
+
 	syncing: boolean = false;
 	syncObsidianToAnkiWrapper() { // Wrapper function for error handling
 		if (this.syncing == true) { console.log(`Syncing already in process...`); return; } // Prevent the user from accidentally start the sync twice
@@ -65,18 +65,18 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 	async syncObsidianToAnki() {
 		new Notice(`Starting Obsidian to Anki Sync for vault ${this.app.vault.getName()}...`); // ${this.app.appId} can be used aswell
 		console.log(`Sync Started`);
-		
+
 		// -- Copy Settings over to block processors --
 		ReplaceBlock.settings = this.settings;
 		BasicBlock.settings = this.settings;
 		ClozeBlock.settings = this.settings;
 		console.log("Plugin Settings:", this.settings)
-		
+
 		// -- Request Access --
 		await AnkiConnect.requestPermission();
 
 		// -- Create backup of Anki --
-		try{ if(this.settings.backup) await AnkiConnect.createBackup(); } catch(e){ console.error(e); }
+		try { if (this.settings.backup) await AnkiConnect.createBackup(); } catch (e) { console.error(e); }
 
 		// -- Create models if it doesn't exists --
 		await AnkiConnect.createModel("ObsidianAnkiSyncModel", ["oid", "Text", "Extra", "Breadcrumb", "Config", "Tobedefinedlater", "Tobedefinedlater2"], AnkiCardTemplates.frontTemplate, AnkiCardTemplates.backTemplate);
@@ -92,33 +92,40 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 		console.log("Recognized Blocks:", allBlocks);
 
 		// -- Declare some variables to keep track of different operations performed --
-		let created, updated, deleted: number;
-		created = updated = deleted = 0;
+		let created, updated, deleted, failedCreated, failedUpdated, failedDeleted: number;
+		created = updated = deleted = failedCreated = failedUpdated = failedDeleted = 0;
 
 		// -- Create or update notes in anki for all collected blocks --
 		for (var block of allBlocks) {
 			let blockOId: string = await block.getOId();
 			let blockAnkiId: number = await block.getAnkiId();
 			if (blockOId == null || blockOId == "") {
-				let new_blockOId = await block.addInAnki();
+				let new_blockOId;
+				try {
+					new_blockOId = await block.addInAnki();
+					console.log(`Added note with new oId ${new_blockOId}`);
+					created++;
+				} catch (e) { console.error(e); failedCreated++; }
 				await block.updateOIdinObsidian(new_blockOId);
-				console.log(`Added note with new oId ${new_blockOId}`);
-				created++;
 			}
 			else if (blockAnkiId == null || isNaN(blockAnkiId)) {
-				await block.addInAnki();
-				console.log(`Added note with old oId ${blockOId} since it's respective anki note was not found`);
-				created++;
+				try {
+					await block.addInAnki();
+					console.log(`Added note with old oId ${blockOId} since it's respective anki note was not found`);
+					created++;
+				} catch (e) { console.error(e); failedCreated++; }
 			}
 			else {
-				await block.updateInAnki();
-				console.log(`Updated note with oId ${blockOId} and ankiId ${blockAnkiId}`);
-				updated++;
+				try {
+					await block.updateInAnki();
+					console.log(`Updated note with oId ${blockOId} and ankiId ${blockAnkiId}`);
+					updated++;
+				} catch (e) { console.error(e); failedUpdated++; }
 			}
 		}
 
 		// -- Delete the deleted cards --
-		// Update clozeblocks again
+		// Get all blocks again from obsidian
 		allBlocks = [];
 		for (var file of this.app.vault.getMarkdownFiles()) {
 			let fileContent = await this.app.vault.cachedRead(file);
@@ -139,16 +146,23 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 		// Delete anki notes created by app which are no longer in obsidian vault
 		for (var ankiId of ankiIds) {
 			if (!blockIds.includes(ankiId)) {
-				console.log(`Deleting note with ankiId ${ankiId}`);
-				await AnkiConnect.deteteNote(ankiId);
-				deleted++;
+				try {
+					await AnkiConnect.deteteNote(ankiId);
+					console.log(`Deleted note with ankiId ${ankiId}`);
+					deleted++;
+				} catch (e) { console.error(e); failedDeleted++; }
 			}
 		}
 
-		// -- Update Anki and show results --
+		// -- Update Anki and show summery --
 		await AnkiConnect.invoke("removeEmptyNotes", {});
 		await AnkiConnect.invoke("reloadCollection", {});
-		new Notice(`Sync Completed! \nCreated Blocks:${created} Updated Blocks:${updated} Deleted Blocks:${deleted}`, 4000);
-		console.log(`Sync Completed! Created Blocks:${created} Updated Blocks:${updated} Deleted Blocks:${deleted}`);
+		let summery = `Sync Completed! \nCreated Blocks: ${created} Updated Blocks: ${updated} Deleted Blocks: ${deleted}\n`;
+		if (failedCreated > 0) summery += `Failed Created Blocks: ${failedCreated}`;
+		if (failedUpdated > 0) summery += `Failed Updated Blocks: ${failedUpdated}`;
+		if (failedDeleted > 0) summery += `Failed Deleted Blocks: ${failedDeleted}`;
+		if (failedCreated > 0 || failedUpdated > 0 || failedDeleted > 0) summery += `\nPlease create an issue at plugin's github reprository.`;
+		new Notice(summery, 4000);
+		console.log(summery);
 	}
 }
