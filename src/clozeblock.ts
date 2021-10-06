@@ -59,7 +59,7 @@ export class ClozeBlock extends Block {
         let anki = this.original;
 
         // Remove All Comments
-        const CommentsRegExp: RegExp = /<!--((\n|.)*?)-->/gi // https://regexr.com/5tatm
+        const CommentsRegExp: RegExp = /<!--(('.*'|".*"|\n|.)*?)-->/gi // https://regexr.com/66vg3
         anki = anki.replaceAll(CommentsRegExp, "");
 
         // Fix Latex format

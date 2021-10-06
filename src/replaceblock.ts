@@ -59,11 +59,11 @@ export class ReplaceBlock extends Block {
         let anki = this.original;
 
         // Remove All Comments
-        const CommentsRegExp: RegExp = /<!--((\n|.)*?)-->/gi // https://regexr.com/5tatm
+        const CommentsRegExp: RegExp = /<!--('.*'|".*"|\n|.)*?-->/gi // https://regexr.com/66vg3
         anki = anki.replaceAll(CommentsRegExp, "");
 
         // Add the clozes braces to replace texts
-        const ReplaceStatementRegExp: RegExp = /<!--(\t|\n| )*?replace((\n| (\n|.)*?)*?) -->/gi // https://regexr.com/5tb31
+        const ReplaceStatementRegExp: RegExp = /<!--(\t|\n| )*?replace(\t|\n| )('.*'|".*"|\n|.)*?-->/gi // https://regexr.com/66vg0
         let matches = [...this.original.matchAll(ReplaceStatementRegExp)];
         matches.forEach((match) => {
             console.debug(match[0]);

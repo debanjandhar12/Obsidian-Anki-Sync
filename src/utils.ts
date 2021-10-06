@@ -1,7 +1,7 @@
 import { DOMParser } from 'xmldom'
 
 export function getAttribInCommentLine(comment: String, attribute: string): any {
-    const CommentsRegExp: RegExp = /<!--((\n|.)*?)-->/gi // https://regexr.com/5tatm
+    const CommentsRegExp: RegExp = /<!--(('.*'|".*"|\n|.)*?)-->/gi // https://regexr.com/66vg3
     let matches = [...comment.matchAll(CommentsRegExp)];
     let parser = new DOMParser({
         locator: {},

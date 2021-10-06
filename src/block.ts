@@ -25,7 +25,7 @@ export abstract class Block {
     }
 
     getAttrib(attrib: string) {
-        const CommentsRegExp: RegExp = /<!--((\n|.)*?)-->/gi // https://regexr.com/5tatm
+        const CommentsRegExp: RegExp = /<!--(('.*'|".*"|\n|.)*?)-->/gi // https://regexr.com/66vg3
         let match = this.original.match(CommentsRegExp);
         return getAttribInCommentLine(match[0], attrib);
     }
