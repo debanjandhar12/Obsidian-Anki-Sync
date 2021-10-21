@@ -40,7 +40,17 @@ export class ObsidianAnkiSyncSettings extends PluginSettingTab {
 			this.plugin.saveData(this.plugin.settings);
 			}),
 		);
-	
+
+		new Setting(this.containerEl)
+		.setName("Template folder location")
+		.setDesc("All files of this folder will be ignored while syncing to anki.")
+		.addText((textbox) => 
+			textbox.setValue(this.plugin.settings.templatefolder).setPlaceholder("Example: folder1/folder2").onChange((value) => {
+				this.plugin.settings.templatefolder = value;
+				this.plugin.saveData(this.plugin.settings);
+			})
+		);
+
 		// Help Sections
 		containerEl.createEl('h3', {text: 'Help'});
 		let div = containerEl.createEl('div', {});

@@ -5,6 +5,7 @@ import { AnkiCardTemplates } from './templates/AnkiCardTemplates';
 import { findErrorSolution } from "./ErrorSolution";
 
 import { ObsidianAnkiSyncSettings } from "./ObsidianAnkiSyncSettings";
+import { isPathChildOf } from './utils'
 
 import { Block } from './Block';
 import { parseReplaceBlockInFile, ReplaceBlock } from './replaceblock';
@@ -43,7 +44,7 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, { "backup": false, "breadcrumb": true }, await this.loadData());
+		this.settings = Object.assign({}, { "backup": false, "breadcrumb": true, "templatefolder": "" }, await this.loadData());
 	}
 
 	async saveSettings() {
@@ -83,7 +84,7 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 
 		// -- Recognize all different kinds of blocks and collect them --
 		var allBlocks: Block[] = [];
-		for (var file of this.app.vault.getMarkdownFiles()) {
+		for (var file of this.app.vault.getMarkdownFiles().filter((file) => {return !isPathChildOf(file.path, this.settings.templatefolder)})) {
 			let fileContent = await this.app.vault.cachedRead(file);
 			allBlocks = allBlocks.concat(await parseReplaceBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
 			allBlocks = allBlocks.concat(await parseBasicBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
@@ -127,7 +128,7 @@ export default class ObsidianAnkiSyncPlugin extends Plugin {
 		// -- Delete the deleted cards --
 		// Get all blocks again from obsidian
 		allBlocks = [];
-		for (var file of this.app.vault.getMarkdownFiles()) {
+		for (var file of this.app.vault.getMarkdownFiles().filter((file) => {return !isPathChildOf(file.path, this.settings.templatefolder)})) {
 			let fileContent = await this.app.vault.cachedRead(file);
 			allBlocks = allBlocks.concat(await parseReplaceBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
 			allBlocks = allBlocks.concat(await parseBasicBlockInFile(this.app.vault, this.app.metadataCache, file, fileContent));
