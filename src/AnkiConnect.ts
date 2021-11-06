@@ -1,6 +1,3 @@
-import { Notice } from "obsidian";
-import { createJsxClosingElement } from "typescript";
-
 const ANKI_PORT = 8765;
 
 // Read https://github.com/FooSoft/anki-connect#supported-actions
@@ -54,7 +51,7 @@ export async function addNote(oid: string, deckName: string, modelName: string, 
 
     // Some versions of Anki doesnt allow to add notes without cloze
     // The trick below adds an empty note with a cloze block, and then overwites it to overcome the above problem.
-    let ankiId = await invoke("addNote", { "note": { "modelName": modelName, "deckName": deckName, "fields": { "oid": oid, "Text": "{{c1:: placeholder}}", "Extra": "placeholder", "Breadcrumb": "placeholder", "Config" : JSON.stringify({}), "Tobedefinedlater": "Tobedefinedlater", "Tobedefinedlater2": "Tobedefinedlater2"}, "tags": tags, "options": { "allowDuplicate": true } } });
+    let ankiId = await invoke("addNote", { "note": { "modelName": modelName, "deckName": deckName, "fields": { ...fields, "Text": "{{c1:: placeholder}}" }, "tags": tags, "options": { "allowDuplicate": true } } });
     r = updateNote(ankiId, deckName, modelName, fields, tags);
     return ankiId;
 }
