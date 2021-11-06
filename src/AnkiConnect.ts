@@ -129,3 +129,11 @@ export async function createModel(modelName: string, fields: string[], frontTemp
     // Solves #1 by failing silenty, #1 was caused by AnkiConnect calling old Anki API but apprarenty even if it gives error, it works correctly.
     catch (e) {if(e == "save() takes from 1 to 2 positional arguments but 3 were given") console.error(e); else throw e;}; 
 }
+
+export async function storeMediaFileByPath(filename: string, path: string): Promise<any> {
+	return await invoke('storeMediaFile', {
+			filename: filename,
+			path: path
+		}
+	)
+}

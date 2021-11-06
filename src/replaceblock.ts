@@ -4,6 +4,7 @@ import { getAttribInCommentLine, regexPraser } from './utils';
 import { Remarkable } from 'remarkable';
 import * as AnkiConnect from './AnkiConnect';
 import { customAlphabet } from "nanoid";
+import path from "path";
 
 export class ReplaceBlock extends Block {
     original: string;
@@ -26,13 +27,13 @@ export class ReplaceBlock extends Block {
         let uri_html = `<a href="${uri}">${this.vault.getName()} > ${this.file.path.replaceAll("\/", " > ")}</a>`;
         console.debug(uri_html);
         let yamlTags = this.getDocYAMLProp("tags");
-        if(yamlTags == null) yamlTags = [];
-        if(Array.isArray(yamlTags)) yamlTags = yamlTags.toString();
+        if (yamlTags == null) yamlTags = [];
+        if (Array.isArray(yamlTags)) yamlTags = yamlTags.toString();
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
-        console.debug(tags);        
-        let res = await AnkiConnect.addNote(oid, deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html, "Config" : JSON.stringify({}), "Tobedefinedlater": "Tobedefinedlater", "Tobedefinedlater2": "Tobedefinedlater2"}, tags);
-        return oid; 
+        console.debug(tags);
+        let res = await AnkiConnect.addNote(oid, deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": uri_html, "Config": JSON.stringify({}), "Tobedefinedlater": "Tobedefinedlater", "Tobedefinedlater2": "Tobedefinedlater2" }, tags);
+        return oid;
     }
 
     async updateInAnki(): Promise<any> {
@@ -47,11 +48,11 @@ export class ReplaceBlock extends Block {
         let uri_html = `<a href="${uri}">${this.vault.getName()} > ${this.file.path.replaceAll("\/", " > ")}</a>`;
         console.debug(uri_html);
         let yamlTags = this.getDocYAMLProp("tags");
-        if(yamlTags == null) yamlTags = [];
-        if(Array.isArray(yamlTags)) yamlTags = yamlTags.toString();
+        if (yamlTags == null) yamlTags = [];
+        if (Array.isArray(yamlTags)) yamlTags = yamlTags.toString();
         yamlTags = yamlTags.split(/[ ,]+/);
         let tags = [...yamlTags, this.vault.getName().replace(/\s/g, "_"), 'ObsidianAnkiSync', 'replaceblock'];
-        console.debug(tags);        
+        console.debug(tags);
         return await AnkiConnect.updateNote(await this.getAnkiId(), deck, "ObsidianAnkiSyncModel", { "oid": oid, "Text": text, "Extra": extra, "Breadcrumb": ReplaceBlock.settings.breadcrumb ? uri_html : "" }, tags);
     }
 
@@ -89,14 +90,33 @@ export class ReplaceBlock extends Block {
         anki = anki.replaceAll(MdInlineMathRegExp, "\\\\( $1 \\\\)");
         anki = anki.replaceAll(MdDisplayMathRegExp, "\\\\[ $1 \\\\]");
 
+        // Convert obsidian markdown embededs to odinary markdown - https://publish.obsidian.md/help/How+to/Embed+files
+        const obsidianImageEmbededRegExp = /!\[\[([^\[\n]*\.(?:png|jpg|jpeg|gif|bmp|svg|tiff)).*?\]\]/gi // https://regexr.com/6903r
+        anki = anki.replaceAll(obsidianImageEmbededRegExp, "![]($1)");
+
         // Convert Md to HTML format
         var md = new Remarkable('full', {
             html: false,
             breaks: false,
             typographer: false,
         });
-        md.inline.ruler.disable(['sub','sup','ins']);
+        md.inline.ruler.disable(['sub', 'sup', 'ins']);
         md.block.ruler.disable(['code']);
+        const originalLinkValidator = md.inline.validateLink;
+        const dataLinkRegex = /^\s*data:([a-z]+\/[a-z]+(;[a-z-]+=[a-z-]+)?)?(;base64)?,[a-z0-9!$&',()*+,;=\-._~:@/?%\s]*\s*$/i;
+        const isImage = /^.*\.(png|jpg|jpeg|bmp|tiff|gif|apng|svg|webp)$/i;
+        const isWebURL = /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/i;
+        md.inline.validateLink = (url: string) => originalLinkValidator(url) || encodeURI(url).match(dataLinkRegex)|| (encodeURI(url).match(isImage) && !encodeURI(url).match(isWebURL));
+        const originalImageRender = md.renderer.rules.image;
+        md.renderer.rules.image = (...a) => {
+            if((encodeURI(a[0][a[1]].src).match(isImage) && !encodeURI(a[0][a[1]].src).match(isWebURL))) { // Image is relative to vault
+                // @ts-expect-error
+                let imgPath = path.join(this.vault.adapter.basePath,a[0][a[1]].src);
+                AnkiConnect.storeMediaFileByPath(encodeURIComponent(a[0][a[1]].src), imgPath); // Flatten and save
+                a[0][a[1]].src = encodeURIComponent(a[0][a[1]].src); // Flatten image and convert to markdown.
+            }
+            return originalImageRender(...a);   
+        };
         anki = md.render(anki);
 
         return anki;
