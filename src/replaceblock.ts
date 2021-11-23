@@ -110,9 +110,12 @@ export class ReplaceBlock extends Block {
         const originalImageRender = md.renderer.rules.image;
         md.renderer.rules.image = (...a) => {
             if((encodeURI(a[0][a[1]].src).match(isImage) && !encodeURI(a[0][a[1]].src).match(isWebURL))) { // Image is relative to vault
-                // @ts-expect-error
-                let imgPath = path.join(this.vault.adapter.basePath,a[0][a[1]].src);
-                AnkiConnect.storeMediaFileByPath(encodeURIComponent(a[0][a[1]].src), imgPath); // Flatten and save
+                try {
+                    // @ts-expect-error
+                    let imgPath = path.join(this.vault.adapter.basePath,this.metadataCache.getFirstLinkpathDest(a[0][a[1]].src, this.file.path).path);
+                    AnkiConnect.storeMediaFileByPath(encodeURIComponent(a[0][a[1]].src), imgPath); // Flatten and save
+                }
+                catch {}
                 a[0][a[1]].src = encodeURIComponent(a[0][a[1]].src); // Flatten image and convert to markdown.
             }
             return originalImageRender(...a);   
