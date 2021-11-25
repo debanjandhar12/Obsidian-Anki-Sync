@@ -12,7 +12,7 @@ This project has been inspired from [Obsidian_to_Anki](https://github.com/Pseudo
 $$\sin \theta = \frac{Opposite}{Hypotenuse}$$
 <!-- replaceblock-end -->
 ```
-[![Cards](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/Tut0.jpg)](#)
+[![Cards](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/Tut0.jpg)](#examples)
 
 There are many **other ways** to create cards using this plugin. See [Tutorial](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/Tutorial.md) for details and more examples.
 
