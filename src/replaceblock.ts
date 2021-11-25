@@ -40,7 +40,7 @@ export class ReplaceBlock extends Block {
         let oid = this.getOId();
         let text = this.toAnkiNoteContent();
         console.debug(oid, text);
-        let extra = this.getAttrib("extra") || "";
+        let extra = Block.md_to_html(this.getAttrib("extra") || "");
         console.debug(extra);
         let deck = this.getAttrib("deck") || this.getDocYAMLProp("deck") || "Default::ObsidianAnkiSync";
         console.debug(deck);
