@@ -14,7 +14,7 @@ $$\sin \theta = \frac{Opposite}{Hypotenuse}$$
 ```
 ![Cards](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/Tut0.jpg)
 
-There are many other ways to create cards using this plugin. See [Tutorial](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/Tutorial.md) for details and more examples.
+There are many **other ways** to create cards using this plugin. See [Tutorial](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/Tutorial.md) for details and more examples.
 
 ## Features
 
@@ -23,7 +23,7 @@ There are many other ways to create cards using this plugin. See [Tutorial](http
 - 📘 **Adding cards to user-specified deck** on a *per-file* or *per-block* basis.
 - 📂 Ignore template folders.
 - ❔ Cloze **within Latex Math and Code Blocks** by using [replaceblock](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/replaceblock.md).
-- ❔ Cloze by using highlights or anki's cloze syntax by using [clozeblock](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/clozeblock.md).
+- ❔ Cloze by using **highlights** or **anki's cloze syntax** by using [clozeblock](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/clozeblock.md).
 - ♻ Syncing is done by **creating, updating, deleting** of anki-sync-blocks from obsidian to anki.
 - 🥳 Many other features like **extra field, tags** etc...
 
@@ -46,7 +46,7 @@ There are many other ways to create cards using this plugin. See [Tutorial](http
 4. Now, you can use the plugin by clicking Sync to Anki button. 
    NB: Always make sure the anki is running before clicking the Sync to Anki button in obsidian.
 
-5. If you receive the message bellow, click `Yes`. ![Permission](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/permission.jpg)
+5. If you receive the message bellow, click `Yes`. ![Permission](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/permission.png)
 
 ## Documentation
 
