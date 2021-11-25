@@ -63,6 +63,15 @@ export class ClozeBlock extends Block {
         const CommentsRegExp: RegExp = /<!--(('.*'|".*"|\n|.)*?)-->/gi // https://regexr.com/66vg3
         anki = anki.replaceAll(CommentsRegExp, "");
 
+        // Add the clozes braces for highlights
+        let replaceId = 0;
+        for (const match of anki.matchAll(/{{c(\d)::(.|\n)*?}}/g)) { // Get last replaceid used by user in anki cloze syntax
+            replaceId = Math.max(replaceId, parseInt(match[1]));
+        }
+        anki = anki.replace(/(?<!=)==([^=][^$]*?)==/g, function (match) { // https://regexr.com/6a8jr
+            return `{{c${++replaceId}:: ${match} }}`;
+        });
+
         // Fix Latex format
         const MdInlineMathRegExp: RegExp = /(?<!\$)\$((?=[\S])(?=[^$])[\s\S]*?\S)\$/g // https://github.com/Pseudonium/Obsidian_to_Anki/blob/488454f3c39a64bd0381f490c20f47866a3e3a3d/src/constants.ts
         const MdDisplayMathRegExp: RegExp = /\$\$([\s\S]*?)\$\$/g // https://github.com/Pseudonium/Obsidian_to_Anki/blob/488454f3c39a64bd0381f490c20f47866a3e3a3d/src/constants.ts
