@@ -71,15 +71,20 @@ Several examples already shown above.
 
 ## clozeblock
 
-It is used make cloze cards. It suports Anki's cloze card syntax.
+It is used make cloze cards. It suports Anki's cloze card syntax and highlights.
 
 ```markdown
 <!-- clozeblock-start -->
 The capital of Japan is {{c1:: Tokyo}}
 <!-- clozeblock-end -->
 ```
-
-This would generate the card:
+or 
+```markdown
+<!-- clozeblock-start -->
+The capital of Japan is ==Tokyo==
+<!-- clozeblock-end -->
+```
+Any one of the above code would generate this card in anki:
 
 ![Cards](./images/Tut4.jpg)
 

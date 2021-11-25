@@ -1,6 +1,6 @@
 # replaceblock
 
-It is used make cloze cards. It suports Anki's cloze card syntax.
+It is used make cloze cards. It suports Anki's cloze card syntax and highlights.
 
 See [Tutorial](/docs/Tutorial.md) for examples.
 
