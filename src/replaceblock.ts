@@ -68,7 +68,7 @@ export class ReplaceBlock extends Block {
         let matches = [...this.original.matchAll(ReplaceStatementRegExp)];
         matches.forEach((match) => {
             console.debug(match[0]);
-            let replaceId = getAttribInCommentLine(match[0], "id");
+            let replaceId = getAttribInCommentLine(match[0], "id") || 1;
             let replaceText = getAttribInCommentLine(match[0], "text") || regexPraser(getAttribInCommentLine(match[0], "regex")) || regexPraser("/$^/g");
             let n = getAttribInCommentLine(match[0], "n") || "All";
             if (n == "All") {
