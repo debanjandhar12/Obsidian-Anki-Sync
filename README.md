@@ -43,10 +43,10 @@ There are many **other ways** to create cards using this plugin. See [Tutorial](
 
    - Restart Anki.
 
-4. Now, you can use the plugin by clicking Sync to Anki button. 
+4. Now, you can use the plugin by clicking Sync to Anki button. <br />
    NB: Always make sure the anki is running before clicking the Sync to Anki button in obsidian.
 
-5. If you receive the message bellow, click `Yes`. 
+5. If you receive the message bellow, click `Yes`. <br />
    ![Permission](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/permission.png)
 
 ## Documentation
@@ -67,20 +67,20 @@ This plugin was made with the aim of creating a way to do so.
 
 <details>
  <summary>How does auto deletation work?</summary>
-   First, each anki card is marked as "created by plugin from this vault" and "not created by plugin from this vault". A card is marked as "created by plugin" if it contains the name of vault as tag, as well as ObsidianAnkiSync tag, as well as the type of note of the card must be of type ObsidianAnkiSyncModel.
+   First, each card in anki is marked as "created by plugin from this vault" and "not created by plugin from this vault". A card is marked as "created by plugin" if it contains the name of vault as tag, as well as ObsidianAnkiSync tag, as well as the type of note of the card must be of type ObsidianAnkiSyncModel.<br />
    Now, if a card is marked "created by plugin from this vault" but it is not available in the vault, then the card is deleted.
 </details>
 
 <details>
  <summary>Can i delete or modify the auto-generated oid attribute?
  </summary>
-<b>No!</b> Please dont do that. <br> The plugin uses the oid to track the cards in anki.
+<b>No!</b> Please dont do that. <br /> The plugin uses the oid to track the cards in anki.
 Deleting it will cause the plugin to delete the old card and create a new one in Anki. This means that the scheduling information for the card gets deleted if you remove or modify oid.
 </details>
 
 <details>
  <summary>Where is the auto anki backup taken before every sync stored?</summary>
-In Windows 11, it is stored at:<br>
+In Windows 11, it is stored at:<br />
 C:\Users\{WindowsUserName}\AppData\Roaming\Anki2\{AnkiProfileName}
 <br><br>
 NB: The backup files are stored in a per-deck basis with name ObsidianAnkiSync-Backup-${timestamp}_${deck}.apkg
