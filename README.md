@@ -46,7 +46,8 @@ There are many **other ways** to create cards using this plugin. See [Tutorial](
 4. Now, you can use the plugin by clicking Sync to Anki button. 
    NB: Always make sure the anki is running before clicking the Sync to Anki button in obsidian.
 
-5. If you receive the message bellow, click `Yes`. ![Permission](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/permission.png)
+5. If you receive the message bellow, click `Yes`. 
+   ![Permission](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/permission.png)
 
 ## Documentation
 
