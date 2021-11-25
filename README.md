@@ -12,7 +12,7 @@ This project has been inspired from [Obsidian_to_Anki](https://github.com/Pseudo
 $$\sin \theta = \frac{Opposite}{Hypotenuse}$$
 <!-- replaceblock-end -->
 ```
-![Cards](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/Tut0.jpg)
+![Cards!](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/Tut0.jpg)
 
 There are many **other ways** to create cards using this plugin. See [Tutorial](https://github.com/debanjandhar12/Obsidian-Anki-Sync/blob/main/docs/Tutorial.md) for details and more examples.
 
@@ -47,7 +47,10 @@ There are many **other ways** to create cards using this plugin. See [Tutorial](
    NB: Always make sure the anki is running before clicking the Sync to Anki button in obsidian.
 
 5. If you receive the message bellow, click `Yes`. <br />
-   ![Permission](https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/permission.png)
+   <p align="center">
+      <img src="https://raw.githubusercontent.com/debanjandhar12/Obsidian-Anki-Sync/main/docs/images/permission.png" />
+   </p>
+
 
 ## Documentation
 
