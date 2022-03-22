@@ -98,3 +98,9 @@ NB: The backup files are stored in a per-deck basis with name ObsidianAnkiSync-B
  <summary>I found a bug. What to do?</summary>
  Please create a issue <a href="https://github.com/debanjandhar12/Obsidian-Anki-Sync/issues">here</a>
 </details>
+
+## Support
+Loved the tool? Please consider donating 💸 to help it improve! You can also help by spreading the word.<br/>
+<p align="center">
+<a href="https://www.buymeacoffee.com/debanjandhar12" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="50" style="border-radius:1px" />
+</p>
