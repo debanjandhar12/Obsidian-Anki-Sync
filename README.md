@@ -104,3 +104,4 @@ Loved the tool? Please consider donating 💸 to help it improve! You can also h
 <p align="center">
 <a href="https://www.buymeacoffee.com/debanjandhar12" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="50" style="border-radius:1px" />
 </p>
+<sub>This project is tested with BrowserStack.</sub>
